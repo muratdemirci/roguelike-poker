@@ -1,0 +1,255 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    /* Remove overflow: hidden to allow scrolling */
+    overscroll-behavior: none;
+    width: 100%;
+    height: 100%;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    background-color: #1b5938; /* Balatro's green felt background */
+    font-family: "VT323", monospace;
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Show scrollbars for better navigation */
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Custom scrollbar styling for better visibility */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #333;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #ff0055;
+    border-radius: 4px;
+    border: 2px solid #333;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ff3377;
+  }
+
+  /* Custom selection color */
+  ::selection {
+    background-color: #7c3aed;
+    color: white;
+  }
+}
+
+/* Viewport height fixes for mobile browsers */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+
+  html,
+  body {
+    height: -webkit-fill-available;
+  }
+}
+
+/* Pixelated images */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Custom card selection animation */
+@keyframes card-pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5), 0 5px 10px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5), 0 5px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Enhanced card selection styles */
+.card-hover-effect {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease-out;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.card-hover-effect:hover:not(.card-selected):not(.animating) {
+  transform: translateY(-8px) scale(1.05) rotate(-1deg);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+  z-index: 50;
+}
+
+.card-selected {
+  animation: cardGlow 2s ease-in-out infinite, cardFloat 3s ease-in-out infinite;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 5px 10px rgba(0, 0, 0, 0.3);
+  z-index: 40;
+}
+
+/* Keep selected cards elevated */
+.card-elevated {
+  transform: translateY(-20px) rotate(0deg) scale(1.03);
+}
+
+.animate-card-pick {
+  animation: cardSelect 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 40;
+}
+
+.animate-card-unpick {
+  animation: cardDeselect 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Make sure the card glow is maintained during animation */
+.animate-card-pick .balatro-card,
+.animating .balatro-card.card-selected {
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7), 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Balatro-style UI elements */
+.balatro-panel {
+  background-color: #222;
+  border: 4px solid #333;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.balatro-panel-inner {
+  background-color: #333;
+  border: 2px solid #444;
+  border-radius: 6px;
+  padding: 8px;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.balatro-header {
+  background-color: #aa7304;
+  border: 4px solid #8b5d04;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  padding: 8px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+.balatro-btn {
+  background-color: #d33;
+  border: none;
+  border-radius: 4px;
+  font-family: "VT323", monospace;
+  font-size: 24px;
+  color: white;
+  padding: 8px 16px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.balatro-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.balatro-score {
+  font-size: 32px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  color: #fff;
+}
+
+.balatro-score-small {
+  font-size: 18px;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.balatro-multiplier {
+  display: flex;
+  background: linear-gradient(to right, #2196f3, #f44336);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.balatro-multiplier-left {
+  background-color: #2196f3;
+  color: white;
+  padding: 4px 8px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.balatro-multiplier-symbol {
+  background-color: #444;
+  color: white;
+  padding: 4px 8px;
+  font-size: 28px;
+}
+
+.balatro-multiplier-right {
+  background-color: #f44336;
+  color: white;
+  padding: 4px 8px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Card styles */
+.balatro-card {
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.balatro-card:hover:not(.card-selected):not(.animating) {
+  transform: translateY(-8px) scale(1.05) rotate(-1deg);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+.balatro-card-back {
+  background-color: #6b1b7a;
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 20px
+  );
+}
